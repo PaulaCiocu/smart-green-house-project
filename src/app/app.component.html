@@ -35,12 +35,12 @@
   </div>
 
   <!-- Water Detected Section -->
-  <div *ngIf="water_data !== undefined" class="card my-3 custom-card-body">
+  <div *ngIf="water_data" class="card my-3 custom-card-body">
     <div class="card-body text-bg-light">
       <h5 class="card-title" class="text-info">Water Detection</h5>
       <p class="card-text text-secondary">
         Water Detected:
-        <span class="text-info-emphasis">{{ water_data ? 'Yes' : 'No' }}</span>
+        <span class="text-info-emphasis">{{ water_data }}</span>
       </p>
     </div>
   </div>
