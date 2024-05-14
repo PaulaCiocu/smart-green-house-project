@@ -1,7 +1,6 @@
 <div class="container-sm mt-3 custom-card-body">
   <<h2 class="text-info-emphasis">Welcome to our {{ title }} project!</h2>
 
-  <!-- Humidity Section -->
   <div *ngIf="humidityData" class="card my-3 custom-card-body">
     <div class="card-body text-bg-light">
       <h5 class="card-title" class="text-info ">Humidity</h5>
@@ -44,5 +43,7 @@
       </p>
     </div>
   </div>>
+
+  <button class="btn btn-primary" (click)="startSampling()">Start Sampling</button>
 
 </div>

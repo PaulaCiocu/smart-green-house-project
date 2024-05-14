@@ -14,10 +14,10 @@ import firebase from "firebase/compat";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'angular-raspberry';
   public chart: any;
-  data =  [, ];
+  data = [,];
 
   humidityData = 0;
   temperatureData = 0;
@@ -29,17 +29,34 @@ export class AppComponent implements OnInit {
   private alive = true;
   private dataSubscription: Subscription | undefined;
 
-  constructor(private database: Database) {}
-
-  ngOnInit() {
-    this.startSampling();
+  constructor(private database: Database) {
+    this.getDataValues();
   }
 
-  ngOnDestroy() {
-    this.alive = false;
-    if (this.dataSubscription) {
-      this.dataSubscription.unsubscribe();
-    }
+  getDataValues() {
+    const humidity = ref(this.database, 'Humidity');
+    onValue(humidity, (snapshot) => {
+      this.humidityData = snapshot.val();
+      console.log("Humidity: " + this.humidityData)
+    });
+
+    const light = ref(this.database, 'Light_detected');
+    onValue(light, (snapshot) => {
+      this.lightData = snapshot.val();
+      console.log("Light detected:  " + this.lightData)
+    });
+
+    const temperature = ref(this.database, 'Temp');
+    onValue(temperature, (snapshot) => {
+      this.temperatureData = snapshot.val();
+      console.log("Temperature:  " + this.temperatureData)
+    });
+
+    const water = ref(this.database, 'Water_detected');
+    onValue(water, (snapshot) => {
+      this.waterData = snapshot.val();
+      console.log("Water detected:  " + this.waterData)
+    });
   }
 
 // Function to update sensor data properties
@@ -86,7 +103,7 @@ export class AppComponent implements OnInit {
     const now = new Date(); // Sample time in ISO string format
     const hours = now.getHours().toString().padStart(2, '0'); // Ensure two-digit format
     const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two-digit format
-    const sampledAt =  `${hours}:${minutes}`;
+    const sampledAt = `${hours}:${minutes}`;
     const sampleData: any[] = [];
     const promises: Promise<void>[] = [];
 
@@ -96,7 +113,7 @@ export class AppComponent implements OnInit {
       const promise = new Promise<void>((resolve, reject) => {
         onValue(sensorRef, (snapshot) => {
           const value = snapshot.val();
-          sampleData.push({ sensor, value });
+          sampleData.push({sensor, value});
           resolve(); // Resolve the promise when data is received
         }, {
           onlyOnce: true // Listen for value once and resolve
@@ -112,6 +129,6 @@ export class AppComponent implements OnInit {
     });
     this.updateSensorData();
   }
-
-
 }
+
+
