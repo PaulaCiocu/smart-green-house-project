@@ -5,7 +5,6 @@ import {interval, Observable, Subscription, takeWhile} from "rxjs";
 import {AngularFireDatabase} from "@angular/fire/compat/database";
 import {getDatabase, ref, onValue, Database} from "@angular/fire/database";
 import firebase from "firebase/compat";
-import Chart from "chart.js/auto";
 
 
 @Component({
