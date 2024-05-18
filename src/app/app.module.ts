@@ -1,21 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
-import { AppRoutes } from './app.routes';
-import {environment} from "../environments/environment";
-import {AngularFireModule} from "@angular/fire/compat"; // Import your AppRoutes module
+import { HomeComponent } from './home/home.component';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
+  declarations: [
+
+  ],
   imports: [
     BrowserModule,
-    RouterModule, // Import RouterModule for routing
-    AppRoutes,
+    AppRoutingModule,
     AppComponent,
-    AngularFireModule.initializeApp(environment.firebase)
-    // Import and use your AppRoutes module
+    HomeComponent,
+    GraphComponent
   ],
   providers: [],
-
 })
 export class AppModule { }
