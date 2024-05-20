@@ -4,17 +4,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { GraphComponent } from './graph/graph.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppComponent,
-    HomeComponent,
-    GraphComponent
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+
   ],
   providers: [],
 })

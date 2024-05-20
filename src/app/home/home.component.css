@@ -1,0 +1,5 @@
+/* app.component.css */
+.custom-card-body {
+  max-width: 600px; /* Specify the desired maximum width for card-body */
+  margin: 0 auto; /* Center the card-body horizontally */
+}
