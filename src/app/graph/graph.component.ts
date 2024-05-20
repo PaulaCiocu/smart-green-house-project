@@ -65,8 +65,7 @@ export class GraphComponent implements OnInit{
       };
 
       const date = new Date(item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000);
-      const formattedDate = date.toLocaleString('en-US', {
-        timeZone: 'UTC',
+      const formattedDate = date.toLocaleString('en-GB', {
         month: 'long',
         day: '2-digit',
         year: 'numeric',
