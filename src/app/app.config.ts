@@ -9,6 +9,7 @@ import { provideDatabase } from '@angular/fire/database';
 import { routes } from "./app-routing.module";
 import { environment } from '../environments/environment';
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
+import {getAuth, provideAuth} from "@angular/fire/auth";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideDatabase(() => getDatabase()),
-    provideFirestore(()=> getFirestore())
+    provideFirestore(()=> getFirestore()),
+    provideAuth(()=> getAuth())
   ]
 };
-

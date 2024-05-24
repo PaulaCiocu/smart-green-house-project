@@ -7,6 +7,8 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {collection, collectionData, Firestore, getDocs} from "@angular/fire/firestore";
 import firebase from "firebase/compat";
 import {Item} from "./Item";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {Auth} from "@angular/fire/auth";
 
 
 @Component({
@@ -44,19 +46,19 @@ export class GraphComponent implements OnInit{
   }
 
   populateMap(list: any[]) {
-    const maxItems = 100; // Maximum number of items allowed in the map
+    const maxItems = 20; // Maximum number of items allowed in the map
     const minTimeDifference = 30000; // Minimum time difference of 1 hour in milliseconds
     let count = 0; // Counter for the number of items added to the map
     let lastTimestamp = 0; // Variable to store the last timestamp added to the map
 
     list.forEach(item => {
       if (count >= maxItems) {
-        return; // Exit the loop if the maximum number of items is reached
+         return; // Exit the loop if the maximum number of items is reached
       }
 
       const timestamp = item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000;
       if (timestamp === lastTimestamp || (timestamp - lastTimestamp) < minTimeDifference) {
-        return; // Skip adding the item if it has the same timestamp as the last item or if the time difference is less than 1 hour
+        //return; // Skip adding the item if it has the same timestamp as the last item or if the time difference is less than 1 hour
       }
 
       const data = {
@@ -68,16 +70,15 @@ export class GraphComponent implements OnInit{
       const formattedDate = date.toLocaleString('en-GB', {
         month: 'long',
         day: '2-digit',
-        year: 'numeric',
         hour: 'numeric',
         minute: '2-digit',
-        second: '2-digit',
-        hour12: true
+        hour12: false
       });
 
       this.sampleDataMap.set(formattedDate, data);
       lastTimestamp = timestamp; // Update the last timestamp variable
       count++; // Increment the counter after adding an item to the map
+
     });
 
     console.log('Sample Data Map:', this.sampleDataMap);

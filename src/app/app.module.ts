@@ -8,6 +8,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {appConfig} from "./app.config";
 
 @NgModule({
   declarations: [
@@ -15,10 +17,9 @@ import { environment } from '../environments/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
 
   ],
-  providers: [],
+  providers: [...appConfig.providers],
 })
 export class AppModule { }

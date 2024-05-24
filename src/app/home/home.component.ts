@@ -3,6 +3,7 @@ import {NgIf} from "@angular/common";
 import {interval, Subscription, takeWhile} from "rxjs";
 import {Database, onValue, ref} from "@angular/fire/database";
 import {Router} from "@angular/router";
+import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,8 @@ export class HomeComponent {
   waterData = 0;
 
 
-  constructor(private database: Database, private router: Router) {
+
+  constructor( private database: Database, private router: Router) {
     this.getDataValues();
   }
 
