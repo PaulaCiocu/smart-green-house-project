@@ -23,7 +23,6 @@ app.add_middleware(
 )
 
 # gets API Key from environment variable OPENAI_API_KEY
-key = "sk-proj-aDcDP7CEhSuXdU5R6qKOT3BlbkFJnEWGW8N20gb6ySsyQytv"
 client = OpenAI(api_key=key)
 
 @app.get("/{plant_name}")
