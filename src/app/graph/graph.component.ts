@@ -1,125 +1,149 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {interval, Observable, Subscription, takeWhile} from "rxjs";
-import { BaseChartDirective } from 'ng2-charts';
-
+import { Component, inject, OnInit } from '@angular/core';
+import { Subscription } from "rxjs";
+import { Firestore, collection, getDocs } from "@angular/fire/firestore";
 import Chart from 'chart.js/auto';
-import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {collection, collectionData, Firestore, getDocs} from "@angular/fire/firestore";
-import firebase from "firebase/compat";
-import {Item} from "./Item";
-import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {Auth} from "@angular/fire/auth";
-
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
-  standalone: true,
-  styleUrl: './graph.component.css'
+  styleUrls: ['./graph.component.css'],
+  standalone: true
 })
-
-export class GraphComponent implements OnInit{
-  public chart: any;
-  time: any;
+export class GraphComponent implements OnInit {
+  public temperatureChart: any;
+  public humidityChart: any;
+  public wetnessScoreChart: any;
   sampleDataMap: Map<string, any> = new Map<string, any[]>();
-  private alive = true;
   private dataSubscription: Subscription | undefined;
-  private documents: any;
   firestore: Firestore = inject(Firestore)
 
-
-  constructor() {
-    //this.createChart();
-  }
+  constructor() {}
 
   ngOnInit() {
     this.getDataFirestore();
-    this.createChart()
+    this.createCharts();
   }
-
 
   async getDataFirestore() {
     const itemCollection = collection(this.firestore, 'greenhouse-data');
     const snapshot = await getDocs(itemCollection);
-    const list = snapshot.docs.map(doc =>doc.data())
+    const list = snapshot.docs.map(doc => doc.data());
     this.populateMap(list);
   }
 
   populateMap(list: any[]) {
-    const maxItems = 20; // Maximum number of items allowed in the map
-    const minTimeDifference = 30000; // Minimum time difference of 1 hour in milliseconds
-    let count = 0; // Counter for the number of items added to the map
-    let lastTimestamp = 0; // Variable to store the last timestamp added to the map
+    const maxItems = 20;
+    const minTimeDifference = 30000;
+    let count = 0;
+    let lastTimestamp = 0;
 
     list.forEach(item => {
       if (count >= maxItems) {
-         return; // Exit the loop if the maximum number of items is reached
+        return;
       }
 
       const timestamp = item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000;
       if (timestamp === lastTimestamp || (timestamp - lastTimestamp) < minTimeDifference) {
-        //return; // Skip adding the item if it has the same timestamp as the last item or if the time difference is less than 1 hour
+        return;
       }
 
       const data = {
         humidity: item.humidity,
-        temperature: item.temperature
+        temperature: item.temperature,
+        wetness_score: item.wetness_score // Assuming 'wetness_score' field exists in the data
       };
 
-      const date = new Date(item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000);
-      const formattedDate = date.toLocaleString('en-GB', {
-        month: 'long',
-        day: '2-digit',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: false
-      });
+      const date = new Date(timestamp);
+      const formattedDate = `${date.toLocaleString('en-GB', { month: 'long' })} ${date.getDate()} at ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
       this.sampleDataMap.set(formattedDate, data);
-      lastTimestamp = timestamp; // Update the last timestamp variable
-      count++; // Increment the counter after adding an item to the map
-
+      lastTimestamp = timestamp;
+      count++;
     });
 
     console.log('Sample Data Map:', this.sampleDataMap);
-    this.updateChart();
+    this.updateCharts();
   }
 
-
-  createChart() {
-
-    this.chart = new Chart("MyChart", {
-      type: 'bar', //this denotes tha type of chart
-
-      data: {// values on X-Axis
-        labels: [],
-        datasets: [
-          {
-            label: "Humidity",
-            data: [],
-            backgroundColor: 'blue'
-          },
-          {
-            label: "Temperature",
-            data: [],
-            backgroundColor: 'limegreen'
-          }
-        ]
-      },
+  createCharts() {
+    this.temperatureChart = new Chart("TemperatureChart", {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: "Temperature", data: [], backgroundColor: 'green', borderColor: 'green' }] },
       options: {
-        aspectRatio: 2.5
+        aspectRatio: 2.5,
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 16,
+                weight: 400
+              },
+              color: 'black',
+              pointStyle: 'triangle',
+              usePointStyle: false,
+            }
+          }
+        }
       }
-
     });
 
+    this.humidityChart = new Chart("HumidityChart", {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: "Humidity", data: [], backgroundColor: 'blue', borderColor: 'blue' }] },
+      options: {
+        aspectRatio: 2.5,
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 16,
+                weight: 400
+              },
+              color: 'black',
+              pointStyle:'triangle',
+              usePointStyle: false,
+            }
+          }
+        }
+      }
+    });
+
+    this.wetnessScoreChart = new Chart("WetnessScoreChart", {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: "Wetness Score", data: [], backgroundColor: 'red', borderColor: 'red' }] },
+      options: {
+        aspectRatio: 2.5,
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 16,
+                weight: 400
+              },
+              color: 'black',
+              pointStyle:'star',
+              usePointStyle: false,
+            }
+          }
+        }
+      }
+    });
   }
 
-  updateChart() {
+  updateCharts() {
     this.sampleDataMap.forEach((data, timestamp) => {
-      this.chart.data.labels.push(timestamp);
-      this.chart.data.datasets[0].data.push(data.humidity);
-      this.chart.data.datasets[1].data.push(data.temperature);
+      this.temperatureChart.data.labels.push(timestamp);
+      this.temperatureChart.data.datasets[0].data.push(data.temperature);
+
+      this.humidityChart.data.labels.push(timestamp);
+      this.humidityChart.data.datasets[0].data.push(data.humidity);
+
+      this.wetnessScoreChart.data.labels.push(timestamp);
+      this.wetnessScoreChart.data.datasets[0].data.push(data.wetness_score);
     });
-    this.chart.update();
+
+    this.temperatureChart.update();
+    this.humidityChart.update();
+    this.wetnessScoreChart.update();
   }
 }
