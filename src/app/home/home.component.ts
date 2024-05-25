@@ -4,6 +4,8 @@ import {interval, Subscription, takeWhile} from "rxjs";
 import {Database, onValue, ref} from "@angular/fire/database";
 import {Router} from "@angular/router";
 import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {PlantApiClient} from "../client/AIApiClient";
+import {PlantModel} from "../client/PlantModel";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +26,7 @@ export class HomeComponent {
   temperatureData = 0;
   lightData = true;
   waterData = 0;
-
+  plantData: PlantModel | null = null;
 
 
   constructor( private database: Database, private router: Router) {
@@ -58,7 +60,18 @@ export class HomeComponent {
   }
 
 
-
+  //npm install axios
+  fetchPlantData(plantName: string) {
+    PlantApiClient.getOneAsync(plantName).then(
+      (data) => {
+        this.plantData = data;
+        console.log("Plant Data: ", this.plantData);
+      },
+      (error) => {
+        console.error("Error fetching plant data: ", error);
+      }
+    );
+  }
 
 
 }
