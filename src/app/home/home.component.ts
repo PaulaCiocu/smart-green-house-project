@@ -5,13 +5,14 @@ import {Database, onValue, ref} from "@angular/fire/database";
 import {Router} from "@angular/router";
 import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {PlantApiClient} from "../client/AIApiClient";
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import {PlantModel} from "../client/PlantModel";
 
 @Component({
   selector: 'app-home',
   standalone: true,
     imports: [
-        NgIf
+        NgIf, FormsModule
     ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -27,6 +28,8 @@ export class HomeComponent {
   lightData = true;
   waterData = 0;
   plantData: PlantModel | null = null;
+  plantName: string = ''; // Add this property to hold the plant name input value
+
 
 
   constructor( private database: Database, private router: Router) {
