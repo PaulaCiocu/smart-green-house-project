@@ -57,9 +57,6 @@ export class HomeComponent {
     });
   }
 
-  goToGraph(): void {
-    this.router.navigate(['/graph']);
-  }
 
 
 

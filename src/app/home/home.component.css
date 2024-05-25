@@ -3,3 +3,13 @@
   max-width: 600px; /* Specify the desired maximum width for card-body */
   margin: 0 auto; /* Center the card-body horizontally */
 }
+.bigger-link {
+  font-size: 1.3em; /* Increase font size on hover for a subtle effect */
+  text-decoration: none;
+  transition: background-color 0.3s, border-radius 0.3s; /* Smooth transition */
+}
+.bigger-link:hover{
+  cursor: pointer;
+  background-color: rgb(237, 247, 252); /* Slight blue background */
+
+}

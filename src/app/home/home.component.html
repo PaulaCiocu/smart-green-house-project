@@ -1,9 +1,10 @@
 <div class="container-sm mt-3 custom-card-body">
-  <h2 class="text-info-emphasis">Welcome to our {{ title }} project!</h2>
+  <h2 class="text-info-emphasis">Plant data status 🌵☘️🌴</h2>
 
-  <div *ngIf="humidityData" class="card my-3 custom-card-body">
+  <div class="card my-3 custom-card-body">
+  <div *ngIf="humidityData" >
     <div class="card-body text-bg-light">
-      <h5 class="card-title" class="text-info ">Humidity</h5>
+      <h5 class="card-title text-info">Air Humidity 💧</h5>
       <p class="card-text text-secondary">
         Current Humidity:
         <span class="text-info-emphasis">{{ humidityData }}</span>
@@ -12,10 +13,9 @@
   </div>
 
   <!-- Light Detected Section -->
-  <div *ngIf="lightData !== undefined" class="card my-3 custom-card-body">
+  <div *ngIf="lightData !== undefined" >
     <div class="card-body text-bg-light">
-      <h5 class="card-title" class="text-info">Light Detection</h5>
-      <p class="card-text text-secondary">
+      <h5 class="card-title text-info">Light Detection ☀️</h5>      <p class="card-text text-secondary">
         Light Detected:
         <span class="text-info-emphasis"> {{ lightData ? 'Yes' : 'No' }}</span>
       </p>
@@ -23,9 +23,9 @@
   </div>
 
   <!-- Temperature Section -->
-  <div *ngIf="temperatureData" class="card my-3 custom-card-body">
+  <div *ngIf="temperatureData" >
     <div class="card-body text-bg-light">
-      <h5 class="card-title" class="text-info">Temperature</h5>
+      <h5 class="card-title text-info">Temperature 🌡️</h5>
       <p class="card-text text-secondary">
         Current Temperature:
         <span class="text-info-emphasis">{{ temperatureData }}</span>
@@ -34,14 +34,35 @@
   </div>
 
   <!-- Water Detected Section -->
-  <div *ngIf="waterData" class="card my-3 custom-card-body">
+  <div *ngIf="waterData" >
     <div class="card-body text-bg-light">
-      <h5 class="card-title" class="text-info">Water Detection</h5>
+      <h5 class="card-title text-info">Soil Humidity 🌱</h5>
       <p class="card-text text-secondary">
         Water Detected:
         <span class="text-info-emphasis">{{ waterData }}</span>
       </p>
     </div>
   </div>
-  <button class="btn btn-primary" (click)="goToGraph()">See graph</button>
+  </div>
+
+  <form class="mt-3">
+    <div class="mb-3">
+      <h5 class="text-info-emphasis">Do you want to know the optimal parameters for your plant?</h5>
+      <input type="text" class="form-control" id="plantNameInput" placeholder="Plant Name">
+    </div>
+    <div class="mt-3">
+      <button class="btn btn-primary" >Ask AI</button>
+    </div>
+    <!-- Input field for AI answer -->
+    <div class="mt-3">
+      <input type="text" class="form-control" id="aiAnswerInput" placeholder="AI Answer" readonly>
+    </div>
+
+
+  </form>
+
+  <div class="mt-3">
+  <a href="/graph" class="text-info-emphasis bigger-link">Visualize Plant Data📉📈 </a>
+  </div>
+
 </div>
