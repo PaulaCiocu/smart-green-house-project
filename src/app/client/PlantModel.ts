@@ -3,4 +3,5 @@ export type PlantModel = {
   temperature: string;
   lightning: string;
   soil_wetness:string;
+  description:string;
 }

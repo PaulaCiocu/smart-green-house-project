@@ -6,6 +6,6 @@ const defaultHeaders = {
 
 export const Client = axios.create({
   //specificam proprietati
-  baseURL:"http://localhost:8002",
+  baseURL:"https://plant-image3-6i52tjzona-ey.a.run.app",
   headers: defaultHeaders,
 });
