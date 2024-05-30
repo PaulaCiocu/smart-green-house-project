@@ -10,6 +10,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {appConfig} from "./app.config";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {appConfig} from "./app.config";
     BrowserModule,
     AppRoutingModule,
     AngularFirestoreModule,
+    FormsModule
 
   ],
   providers: [...appConfig.providers],

@@ -4,12 +4,15 @@ import {interval, Subscription, takeWhile} from "rxjs";
 import {Database, onValue, ref} from "@angular/fire/database";
 import {Router} from "@angular/router";
 import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {PlantApiClient} from "../client/AIApiClient";
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import {PlantModel} from "../client/PlantModel";
 
 @Component({
   selector: 'app-home',
   standalone: true,
     imports: [
-        NgIf
+        NgIf, FormsModule
     ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -24,6 +27,8 @@ export class HomeComponent {
   temperatureData = 0;
   lightData = true;
   waterData = 0;
+  plantData: PlantModel | null = null;
+  plantName: string = ''; // Add this property to hold the plant name input value
 
 
 
@@ -58,7 +63,18 @@ export class HomeComponent {
   }
 
 
-
+  //npm install axios
+  fetchPlantData(plantName: string) {
+    PlantApiClient.getOneAsync(plantName).then(
+      (data) => {
+        this.plantData = data;
+        console.log("Plant Data: ", this.plantData);
+      },
+      (error) => {
+        console.error("Error fetching plant data: ", error);
+      }
+    );
+  }
 
 
 }
