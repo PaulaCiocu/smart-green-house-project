@@ -14,7 +14,6 @@ export class GraphComponent implements OnInit {
   public humidityChart: any;
   public wetnessScoreChart: any;
   sampleDataMap: Map<string, any> = new Map<string, any[]>();
-  private dataSubscription: Subscription | undefined;
   firestore: Firestore = inject(Firestore)
 
   constructor() {}
@@ -22,6 +21,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.getDataFirestore();
     this.createCharts();
+
   }
 
   async getDataFirestore() {
@@ -33,27 +33,32 @@ export class GraphComponent implements OnInit {
 
   populateMap(list: any[]) {
     const maxItems = 20;
-    const minTimeDifference = 30000;
     let count = 0;
+    const today = new Date();
     let lastTimestamp = 0;
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDay();
 
-    list.forEach(item => {
+    const filteredList = list.filter(item => {
+      const timestamp = item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000;
+      const date = new Date(timestamp);
+
+      return date.getDay() == todayDay && date.getMonth() == todayMonth;
+    });
+
+    filteredList.forEach(item => {
       if (count >= maxItems) {
         return;
       }
-
       const timestamp = item.sampling_time.seconds * 1000 + item.sampling_time.nanoseconds / 1000000;
-      if (timestamp === lastTimestamp || (timestamp - lastTimestamp) < minTimeDifference) {
-        return;
-      }
+      const date = new Date(timestamp);
 
       const data = {
         humidity: item.humidity,
         temperature: item.temperature,
-        wetness_score: item.wetness_score // Assuming 'wetness_score' field exists in the data
+        wetness_score: item.wetness_score
       };
 
-      const date = new Date(timestamp);
       const formattedDate = `${date.toLocaleString('en-GB', { month: 'long' })} ${date.getDate()} at ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
       this.sampleDataMap.set(formattedDate, data);
