@@ -73,7 +73,7 @@ export class GraphComponent implements OnInit {
   createCharts() {
     this.temperatureChart = new Chart("TemperatureChart", {
       type: 'line',
-      data: { labels: [], datasets: [{ label: "Temperature", data: [], backgroundColor: 'green', borderColor: 'green' }] },
+      data: { labels: [], datasets: [{ label: "Temperature ☀️", data: [], backgroundColor: 'yellow', borderColor: 'yellow' }] },
       options: {
         aspectRatio: 2.5,
         plugins: {
@@ -84,8 +84,8 @@ export class GraphComponent implements OnInit {
                 weight: 400
               },
               color: 'black',
-              pointStyle: 'triangle',
-              usePointStyle: false,
+              pointStyle: 'circle',
+              usePointStyle: true,
             }
           }
         }
@@ -94,7 +94,7 @@ export class GraphComponent implements OnInit {
 
     this.humidityChart = new Chart("HumidityChart", {
       type: 'line',
-      data: { labels: [], datasets: [{ label: "Humidity", data: [], backgroundColor: 'blue', borderColor: 'blue' }] },
+      data: { labels: [], datasets: [{ label: "Air Humidity ☁️", data: [], backgroundColor: 'grey', borderColor: 'grey' }] },
       options: {
         aspectRatio: 2.5,
         plugins: {
@@ -105,8 +105,8 @@ export class GraphComponent implements OnInit {
                 weight: 400
               },
               color: 'black',
-              pointStyle:'triangle',
-              usePointStyle: false,
+              pointStyle:"rectRot",
+              usePointStyle: true,
             }
           }
         }
@@ -115,7 +115,7 @@ export class GraphComponent implements OnInit {
 
     this.wetnessScoreChart = new Chart("WetnessScoreChart", {
       type: 'line',
-      data: { labels: [], datasets: [{ label: "Wetness Score", data: [], backgroundColor: 'red', borderColor: 'red' }] },
+      data: { labels: [], datasets: [{ label: "Soil Humidity 💦", data: [], backgroundColor: 'lightblue', borderColor: 'lightblue' }] },
       options: {
         aspectRatio: 2.5,
         plugins: {
@@ -126,8 +126,8 @@ export class GraphComponent implements OnInit {
                 weight: 400
               },
               color: 'black',
-              pointStyle:'star',
-              usePointStyle: false,
+              pointStyle:'rectRounded',
+              usePointStyle: true,
             }
           }
         }
