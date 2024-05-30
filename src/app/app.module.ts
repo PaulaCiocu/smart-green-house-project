@@ -11,15 +11,18 @@ import { environment } from '../environments/environment';
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {appConfig} from "./app.config";
 import {FormsModule} from "@angular/forms";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 @NgModule({
   declarations: [
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFirestoreModule,
-    FormsModule
+    FormsModule,
+    DashboardComponent
 
   ],
   providers: [...appConfig.providers],
